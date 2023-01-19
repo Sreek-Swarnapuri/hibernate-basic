@@ -1,0 +1,31 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- Properties to connect to the database -->
+        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
+        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+        <property name="hibernate.connection.username">postgres</property>
+        <property name="hibernate.connection.password">1432</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
+        <property name="hibernate.connection.autocommit">autocommit</property>
+
+        <!-- Property to set the mode of DDL for the connected Database -->
+        <property name="hbm2ddl.auto">create</property>
+
+        <!-- Property to show the SQL statements executed by Hibernate -->
+        <property name="show_sql">true</property>
+
+        <!-- Property to enable second level cache -->
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        <!-- Property to provide which second level cache library we are using -->
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.internal.EhcacheRegionFactory</property>
+        <!-- Property to enable query level cache -->
+        <property name="hibernate.cache.use_query_cache">true</property>
+
+
+
+    </session-factory>
+</hibernate-configuration>
