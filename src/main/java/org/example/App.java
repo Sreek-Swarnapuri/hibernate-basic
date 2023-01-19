@@ -4,13 +4,12 @@ import org.example.entity.Employee;
 import org.example.entity.EmployeeName;
 import org.example.entity.relations.one_to_one.Laptop;
 import org.example.entity.relations.one_to_one.Student;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -337,6 +336,40 @@ public class App {
 
         s.getTransaction().commit();
         s.close();
-        
+
+        // ********************** Using SQL queries in HQL **********************
+
+        s = sf.openSession();
+        s.beginTransaction();
+
+        SQLQuery sqlQuery = s.createSQLQuery("select * from student_single");
+        sqlQuery.addEntity(org.example.entity.Student.class);
+
+        List<org.example.entity.Student> studentList = sqlQuery.list();
+
+        System.out.println("------- Students list with sql query -------");
+        for(org.example.entity.Student st: studentList)
+            System.out.println(st);
+
+        s.getTransaction().commit();
+        s.close();
+
+        // fetching only some columns
+        s = sf.openSession();
+        s.beginTransaction();
+
+        SQLQuery sqlQuery1 = s.createSQLQuery("select name, marks from student_single where marks>60");
+        sqlQuery1.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
+        List studentList1 = sqlQuery1.list();
+
+        System.out.println("------- Students list with sql query with name and marks column where marks > 60 -------");
+        for(Object st: studentList1) {
+            Map m = (Map) st;
+            System.out.println(m.get("name") + ":" + m.get("marks") );
+        }
+
+        s.getTransaction().commit();
+        s.close();
+
     }
 }
