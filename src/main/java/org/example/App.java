@@ -371,5 +371,33 @@ public class App {
         s.getTransaction().commit();
         s.close();
 
+        //***************** Hibernate object states *******************
+
+        s = sf.openSession();
+        s.beginTransaction();
+
+        Laptop l = new Laptop();
+        l.setLid(51);
+        l.setLname("LG");
+        l.setPrice(999);
+
+        //Object l is transient state until this point
+        s.save(l);
+        //Object l is now Persistent state since it is changed in the database
+        // Eventhough we have saved the object l above, but since we have not closed the session any changes we make to the object get stored in the database as well
+        l.setPrice(899);
+        /* following statments are called post the price change above
+            Hibernate: insert into Laptop (lname, price, lid) values (?, ?, ?)
+            Hibernate: update Laptop set lname=?, price=? where lid=?
+         */
+
+        s.getTransaction().commit();
+
+        s.detach(l);
+        //Object l gets detached after calling the above statement and any changes we make post this will not be saved
+        l.setPrice(750);
+
+        s.close();
+
     }
 }
