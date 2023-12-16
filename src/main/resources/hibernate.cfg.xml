@@ -12,7 +12,20 @@
         <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/postgres</property>
         <property name="hibernate.connection.autocommit">autocommit</property>
 
-        <!-- Property to set the mode of DDL for the connected Database -->
+        <!-- Property to set the mode of DDL for the connected Database
+            Several values can be set to this property:
+            ===========================================
+            - create     : Hibernate creates a new database schema based on the entity mappings. Drops existing schema and recreate it from scratch.
+            - update     : Hibernate updates the database schema to match the entity mappings. Adds tables, columns, or constraints without affecting existing data.
+                           Not able to handle complex modifications.
+            - validate   : Hibernate validates the entity mappings against the existing database schema. Check if schema matches the expected structure based on the mappings.
+                           Logs errors or warnings if there are any inconsistencies.
+            - create-drop: Similar to `create`. Creates the database schema when the session factory is initialized.
+                           Unlike `create`, drops the entire schema when the session factory is closed or when the application shuts down.
+            - none       : Hibernate would not perform any automatic database schema generation, modification, creation, update, or validation based on entity mapping.
+                           Equivalent to not having the property.
+            - In production, it is generally recommended not to use this property. Instead, database migration tools like Liquibase and Flyway are preferred for managing schema changes.
+        -->
         <property name="hbm2ddl.auto">create</property>
 
         <!-- Property to show the SQL statements executed by Hibernate -->
@@ -24,8 +37,6 @@
         <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.internal.EhcacheRegionFactory</property>
         <!-- Property to enable query level cache -->
         <property name="hibernate.cache.use_query_cache">true</property>
-
-
 
     </session-factory>
 </hibernate-configuration>
